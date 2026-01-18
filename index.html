@@ -3,360 +3,502 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pädagogischer Warenkorb - Demo</title>
-  <link rel="stylesheet" href="sidebar.css">
+  <title>Pädagogischer Warenkorb - Bookmarklet Generator</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f1f5f9;
-      min-height: 100vh;
-    }
-
-    .demo-header {
-      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-      color: white;
+      background: #f8fafc;
       padding: 40px 20px;
-      text-align: center;
+      line-height: 1.6;
     }
-
-    .demo-header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-
-    .demo-header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .demo-content {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      padding-right: 420px;
-    }
-
-    .demo-section {
+    .container { max-width: 800px; margin: 0 auto; }
+    h1 { color: #1e40af; margin-bottom: 10px; }
+    .subtitle { color: #64748b; margin-bottom: 30px; }
+    .card {
       background: white;
       border-radius: 12px;
       padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
     }
-
-    .demo-section h2 {
-      font-size: 1.3rem;
-      color: #1e293b;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .card h2 { color: #1e293b; margin-bottom: 16px; }
+    .step { display: flex; gap: 12px; margin-bottom: 16px; }
+    .step-num {
+      width: 28px; height: 28px;
+      background: #2563eb; color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 14px; flex-shrink: 0;
     }
-
-    .demo-section p {
-      color: #64748b;
-      line-height: 1.6;
-    }
-
-    .demo-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .demo-card {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
+    .code-box {
+      background: #1e293b;
+      color: #e2e8f0;
       padding: 16px;
-      cursor: grab;
-      transition: all 0.2s;
-      position: relative;
-    }
-
-    .demo-card:hover {
-      border-color: #2563eb;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-    }
-
-    .demo-card:active {
-      cursor: grabbing;
-    }
-
-    .demo-card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      background: #e2e8f0;
-    }
-
-    .demo-card h3 {
-      font-size: 1rem;
-      color: #1e293b;
-      margin-bottom: 6px;
-    }
-
-    .demo-card p {
-      font-size: 0.85rem;
-      color: #64748b;
-    }
-
-    .demo-card .type-badge {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-    }
-
-    .instructions {
-      background: #fef3c7;
-      border: 1px solid #fcd34d;
       border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 24px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 11px;
+      overflow-x: auto;
+      word-break: break-all;
+      max-height: 150px;
+      overflow-y: auto;
     }
-
-    .instructions h3 {
-      color: #92400e;
-      margin-bottom: 10px;
-    }
-
-    .instructions ol {
-      color: #78350f;
-      padding-left: 20px;
-    }
-
-    .instructions li {
-      margin-bottom: 8px;
-    }
-
-    .bookmarklet-section {
-      text-align: center;
-      padding: 30px;
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      border: 2px dashed #22c55e;
-    }
-
-    .bookmarklet-link {
+    .btn {
       display: inline-block;
-      background: #22c55e;
-      color: white;
-      padding: 16px 32px;
+      padding: 12px 24px;
       border-radius: 8px;
-      font-size: 1.1rem;
+      font-size: 14px;
       font-weight: 600;
-      text-decoration: none;
-      cursor: grab;
-      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      margin-right: 10px;
+      margin-top: 12px;
     }
-
-    .bookmarklet-link:hover {
-      background: #16a34a;
-      transform: scale(1.05);
+    .btn-primary { background: #2563eb; color: white; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-success { background: #22c55e; color: white; }
+    .btn-success:hover { background: #16a34a; }
+    .success { color: #16a34a; font-weight: 600; display: none; margin-left: 10px; }
+    .test-area {
+      background: #fef3c7;
+      border: 2px solid #fcd34d;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
     }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+    .test-area h3 { color: #92400e; margin-bottom: 16px; }
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 16px;
+      border-radius: 0 8px 8px 0;
       margin-top: 20px;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .feature-icon {
-      font-size: 1.5rem;
-    }
-
-    .feature-text h4 {
-      font-size: 0.95rem;
-      color: #1e293b;
-      margin-bottom: 4px;
-    }
-
-    .feature-text p {
-      font-size: 0.85rem;
-    }
-
-    @media (max-width: 768px) {
-      .demo-content {
-        padding-right: 20px;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="demo-header">
+  <div class="container">
     <h1>🛒 Pädagogischer Warenkorb</h1>
-    <p>Plane deinen Unterricht strukturiert mit Inhalten von WirLernenOnline</p>
-  </div>
+    <p class="subtitle">Inline-Bookmarklet für HTTPS-Seiten (wirlernenonline.de)</p>
 
-  <div class="demo-content">
-    <div class="instructions">
-      <h3>📋 So funktioniert's</h3>
-      <ol>
-        <li><strong>Ablaufmuster wählen</strong> - Wähle rechts ein passendes Unterrichtsmuster</li>
-        <li><strong>Inhalte suchen</strong> - Nutze die Suche, um WLO zu durchsuchen</li>
-        <li><strong>Zuordnen</strong> - Ziehe Inhalte per Drag & Drop in die Phasen</li>
-        <li><strong>Exportieren</strong> - Erstelle einen druckbaren Unterrichtsentwurf</li>
+    <div class="card">
+      <h2>📋 Manuelle Installation</h2>
+      
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <strong>Neues Lesezeichen erstellen</strong><br>
+          Rechtsklick auf Lesezeichen-Leiste → "Seite hinzufügen" oder "Lesezeichen hinzufügen"
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <strong>Name eingeben:</strong> <code>🛒 Warenkorb</code>
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <strong>URL-Feld: Code unten kopieren und einfügen</strong>
+        </div>
+      </div>
+
+      <div class="code-box" id="bookmarklet-code"></div>
+      
+      <button class="btn btn-primary" onclick="copyCode()">📋 Code kopieren</button>
+      <span class="success" id="copy-success">✓ Kopiert!</span>
+
+      <div class="info-box">
+        <strong>💡 Tipp:</strong> Dieses Bookmarklet enthält den gesamten Code inline und funktioniert 
+        auf allen HTTPS-Seiten ohne externe Abhängigkeiten.
+      </div>
+    </div>
+
+    <div class="card test-area">
+      <h3>🧪 Hier testen</h3>
+      <p style="color: #78350f; margin-bottom: 16px;">Teste das Bookmarklet auf dieser Seite:</p>
+      <button class="btn btn-success" onclick="runBookmarklet()">▶ Warenkorb starten</button>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Verwendung</h2>
+      <ol style="padding-left: 20px; color: #475569;">
+        <li style="margin-bottom: 8px;">Öffne <a href="https://suche.wirlernenonline.de" target="_blank">suche.wirlernenonline.de</a></li>
+        <li style="margin-bottom: 8px;">Klicke auf dein "🛒 Warenkorb" Lesezeichen</li>
+        <li style="margin-bottom: 8px;">Die Sidebar erscheint rechts</li>
+        <li style="margin-bottom: 8px;">Wähle ein Ablaufmuster und füge Inhalte hinzu</li>
+        <li>Exportiere als PDF zum Drucken</li>
       </ol>
     </div>
-
-    <div class="demo-section bookmarklet-section">
-      <h2>🔖 Bookmarklet installieren</h2>
-      <p style="margin-bottom: 20px;">Öffne die Installationsseite für das Bookmarklet:</p>
-      <a class="bookmarklet-link" href="install.html" style="text-decoration: none;">
-        📥 Bookmarklet-Installation öffnen
-      </a>
-      <p style="margin-top: 16px; font-size: 0.9rem; color: #64748b;">
-        Dort kannst du das Bookmarklet in deine Lesezeichen ziehen
-      </p>
-    </div>
-
-    <div class="demo-section">
-      <h2>✨ Features</h2>
-      <div class="feature-grid">
-        <div class="feature-item">
-          <span class="feature-icon">📐</span>
-          <div class="feature-text">
-            <h4>Ablaufmuster</h4>
-            <p>7+ didaktische Muster zur Auswahl</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">🔍</span>
-          <div class="feature-text">
-            <h4>WLO-Integration</h4>
-            <p>Direkte Suche in WirLernenOnline</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">🎯</span>
-          <div class="feature-text">
-            <h4>Drag & Drop</h4>
-            <p>Inhalte einfach zuordnen</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">📄</span>
-          <div class="feature-text">
-            <h4>PDF-Export</h4>
-            <p>Druckbarer Unterrichtsentwurf</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon">🤖</span>
-          <div class="feature-text">
-            <h4>Auto-Suche</h4>
-            <p>Automatische Inhaltsvorschläge</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="demo-section">
-      <h2>📦 Demo-Inhalte</h2>
-      <p>Ziehe diese Karten in die Phasen rechts, um die Drag & Drop Funktion zu testen:</p>
-      
-      <div class="demo-cards">
-        <div class="demo-card" draggable="true" data-title="Einführungsvideo: Photosynthese" data-type="🎬 Video" data-url="https://example.com/video1">
-          <img src="https://via.placeholder.com/300x150/3b82f6/ffffff?text=Video" alt="">
-          <span class="type-badge">🎬 Video</span>
-          <h3>Einführungsvideo: Photosynthese</h3>
-          <p>5:30 Min • CC BY-SA 4.0</p>
-        </div>
-
-        <div class="demo-card" draggable="true" data-title="Arbeitsblatt: Blattaufbau" data-type="📝 Arbeitsblatt" data-url="https://example.com/ab1">
-          <img src="https://via.placeholder.com/300x150/22c55e/ffffff?text=AB" alt="">
-          <span class="type-badge">📝 AB</span>
-          <h3>Arbeitsblatt: Blattaufbau</h3>
-          <p>2 Seiten • CC BY 4.0</p>
-        </div>
-
-        <div class="demo-card" draggable="true" data-title="Interaktive Übung: Quiz" data-type="💻 H5P" data-url="https://example.com/h5p1">
-          <img src="https://via.placeholder.com/300x150/f59e0b/ffffff?text=H5P" alt="">
-          <span class="type-badge">💻 H5P</span>
-          <h3>Interaktive Übung: Quiz</h3>
-          <p>10 Fragen • CC0</p>
-        </div>
-
-        <div class="demo-card" draggable="true" data-title="Simulation: Pflanzenzelle" data-type="🔬 Simulation" data-url="https://example.com/sim1">
-          <img src="https://via.placeholder.com/300x150/8b5cf6/ffffff?text=SIM" alt="">
-          <span class="type-badge">🔬 Sim</span>
-          <h3>Simulation: Pflanzenzelle</h3>
-          <p>Interaktiv • CC BY-NC</p>
-        </div>
-
-        <div class="demo-card" draggable="true" data-title="Erklärvideo: Chloroplasten" data-type="🎬 Video" data-url="https://example.com/video2">
-          <img src="https://via.placeholder.com/300x150/ec4899/ffffff?text=Erkl%C3%A4r" alt="">
-          <span class="type-badge">🎬 Video</span>
-          <h3>Erklärvideo: Chloroplasten</h3>
-          <p>8:15 Min • CC BY 4.0</p>
-        </div>
-
-        <div class="demo-card" draggable="true" data-title="Lernspiel: Stoffkreislauf" data-type="🎮 Spiel" data-url="https://example.com/game1">
-          <img src="https://via.placeholder.com/300x150/06b6d4/ffffff?text=Game" alt="">
-          <span class="type-badge">🎮 Spiel</span>
-          <h3>Lernspiel: Stoffkreislauf</h3>
-          <p>Level 1-3 • CC BY-SA</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="demo-section">
-      <h2>🚀 Weiterentwicklungsideen</h2>
-      <ul style="color: #64748b; padding-left: 20px; line-height: 2;">
-        <li><strong>KI-Unterstützung:</strong> Automatische Phasen-Zuordnung basierend auf Lernzielen</li>
-        <li><strong>Kollaboration:</strong> Gemeinsames Planen im Team in Echtzeit</li>
-        <li><strong>Vorlagen-Bibliothek:</strong> Fertige Unterrichtsentwürfe teilen und remixen</li>
-        <li><strong>Kompetenz-Mapping:</strong> Automatische Zuordnung zu Bildungsstandards</li>
-        <li><strong>Lernpfad-Export:</strong> Integration mit LMS (Moodle, ILIAS)</li>
-        <li><strong>Zeitplanung:</strong> Automatische Anpassung der Phasendauer</li>
-        <li><strong>Feedback-Loop:</strong> Bewertung von Materialien durch Lehrkräfte</li>
-      </ul>
-    </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="patterns.js"></script>
-  <script src="wlo-api.js"></script>
-  <script src="pdf-export.js"></script>
-  <script src="sidebar.js"></script>
   <script>
-    // Sidebar initialisieren
-    document.addEventListener('DOMContentLoaded', () => {
-      initWarenkorb();
-
-      // Demo-Karten draggable machen
-      document.querySelectorAll('.demo-card').forEach(card => {
-        card.addEventListener('dragstart', (e) => {
-          const data = {
-            id: 'demo-' + Date.now(),
-            title: card.dataset.title,
-            type: card.dataset.type,
-            url: card.dataset.url,
-            thumbnail: card.querySelector('img')?.src || ''
-          };
-          e.dataTransfer.setData('application/json', JSON.stringify(data));
-          e.dataTransfer.setData('text/plain', data.title);
+    // Kompakter Inline-Code für das Bookmarklet mit WLO-Overlay
+    var bookmarkletSource = `(function(){
+      if(document.getElementById('wk-sidebar')){
+        document.getElementById('wk-sidebar').remove();
+        document.getElementById('wk-css')?.remove();
+        document.querySelectorAll('.wk-overlay').forEach(function(e){e.remove()});
+        return;
+      }
+      var P={
+        frontal:{n:'Frontalunterricht',p:[
+          {i:'🎯',n:'Einstieg',d:'Motivation wecken',t:'10 min'},
+          {i:'📚',n:'Erarbeitung',d:'Neuen Stoff vermitteln',t:'20 min'},
+          {i:'📝',n:'Sicherung',d:'Zusammenfassen',t:'10 min'},
+          {i:'✏️',n:'Übung',d:'Anwenden',t:'15 min'},
+          {i:'🏁',n:'Abschluss',d:'Reflexion',t:'5 min'}
+        ]},
+        problem:{n:'Problemorientiert',p:[
+          {i:'❓',n:'Problemstellung',d:'Ausgangsproblem',t:'10 min'},
+          {i:'💡',n:'Hypothesen',d:'Vermutungen',t:'10 min'},
+          {i:'🔍',n:'Recherche',d:'Informationen',t:'20 min'},
+          {i:'🔧',n:'Lösung',d:'Erarbeitung',t:'15 min'},
+          {i:'🎤',n:'Präsentation',d:'Vorstellen',t:'10 min'}
+        ]},
+        station:{n:'Stationenlernen',p:[
+          {i:'📋',n:'Einführung',d:'Regeln erklären',t:'10 min'},
+          {i:'1️⃣',n:'Station 1',d:'Erste Aufgabe',t:'12 min'},
+          {i:'2️⃣',n:'Station 2',d:'Zweite Aufgabe',t:'12 min'},
+          {i:'3️⃣',n:'Station 3',d:'Dritte Aufgabe',t:'12 min'},
+          {i:'📊',n:'Auswertung',d:'Ergebnisse',t:'10 min'}
+        ]},
+        flip:{n:'Flipped Classroom',p:[
+          {i:'🏠',n:'Vorbereitung',d:'Zuhause lernen',t:'variabel'},
+          {i:'❓',n:'Aktivierung',d:'Fragen klären',t:'10 min'},
+          {i:'🎯',n:'Vertiefung',d:'Übungen',t:'25 min'},
+          {i:'🛠️',n:'Anwendung',d:'Projekte',t:'20 min'}
+        ]},
+        koop:{n:'Think-Pair-Share',p:[
+          {i:'🤔',n:'Think',d:'Einzelarbeit',t:'5 min'},
+          {i:'👥',n:'Pair',d:'Partnerarbeit',t:'10 min'},
+          {i:'🗣️',n:'Share',d:'Plenum',t:'10 min'}
+        ]},
+        direkt:{n:'Direkte Instruktion',p:[
+          {i:'📢',n:'Lernziel',d:'Ziel nennen',t:'3 min'},
+          {i:'👨‍🏫',n:'Modellieren',d:'Vormachen',t:'15 min'},
+          {i:'👥',n:'Geführte Übung',d:'Gemeinsam',t:'15 min'},
+          {i:'✏️',n:'Selbstständig',d:'Alleine üben',t:'20 min'},
+          {i:'✅',n:'Überprüfung',d:'Ergebnisse',t:'7 min'}
+        ]},
+        forsch:{n:'Forschendes Lernen',p:[
+          {i:'🔭',n:'Phänomen',d:'Beobachten',t:'10 min'},
+          {i:'❓',n:'Fragen',d:'Formulieren',t:'8 min'},
+          {i:'🧪',n:'Experiment',d:'Untersuchen',t:'25 min'},
+          {i:'📊',n:'Auswerten',d:'Analysieren',t:'10 min'},
+          {i:'💡',n:'Erkenntnis',d:'Schlussfolgerung',t:'7 min'}
+        ]},
+        projekt:{n:'Projektarbeit',p:[
+          {i:'🎯',n:'Projektstart',d:'Thema & Ziele',t:'15 min'},
+          {i:'📋',n:'Planung',d:'Aufgabenverteilung',t:'10 min'},
+          {i:'🔨',n:'Durchführung',d:'Arbeitsphase',t:'variabel'},
+          {i:'🎤',n:'Präsentation',d:'Ergebnisse zeigen',t:'15 min'},
+          {i:'🔄',n:'Reflexion',d:'Feedback',t:'10 min'}
+        ]},
+        wplan:{n:'Wochenplanarbeit',p:[
+          {i:'📋',n:'Planausgabe',d:'Aufgaben vorstellen',t:'10 min'},
+          {i:'✏️',n:'Pflichtaufgaben',d:'Basisaufgaben',t:'variabel'},
+          {i:'⭐',n:'Wahlaufgaben',d:'Vertiefung',t:'variabel'},
+          {i:'🤝',n:'Beratung',d:'Individuelle Hilfe',t:'variabel'},
+          {i:'✅',n:'Kontrolle',d:'Selbst-/Fremdkontrolle',t:'10 min'}
+        ]},
+        werkst:{n:'Werkstattunterricht',p:[
+          {i:'🚪',n:'Eröffnung',d:'Einführung',t:'10 min'},
+          {i:'🔧',n:'Werkstatt A',d:'Praktische Arbeit',t:'20 min'},
+          {i:'📚',n:'Werkstatt B',d:'Theoretische Arbeit',t:'20 min'},
+          {i:'🎨',n:'Werkstatt C',d:'Kreative Arbeit',t:'20 min'},
+          {i:'📊',n:'Abschluss',d:'Zusammenführung',t:'10 min'}
+        ]}
+      };
+      var cur='frontal',items={},selPhase=0,clickMode=false,topic='',loading=false;
+      var LRT={
+        video:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/38774279-af36-4ec2-8e70-811d5a51a6a1',
+        bild:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/b8fb5fb2-d8bf-4bbe-ab68-358b65a26bed',
+        audio:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/39197d6f-dfb1-4e82-92e5-79f906e9d2a9',
+        interaktiv:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/05aa0f49-7e1b-498b-a7d5-c5fc8e73b2e2',
+        arbeitsblatt:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/c8e52242-361b-4a2a-b95d-25e516b28b45',
+        uebung:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/0b2d7dec-8eb1-4a28-9cf2-4f3a4f5a511b',
+        quiz:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/02bfd0fe-96ab-4dd6-a306-ec362ec25ea0',
+        praes:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/1c610f61-9bf0-4d77-8536-b713a3733510',
+        spiel:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/ded96854-280a-45ac-ad3a-f5b9b8dd0a03',
+        experiment:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/ffe4d8e8-3cfd-4e9a-b025-83f129eb5c9d',
+        webseite:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/55761ec6-0cd4-4677-86ee-6f395934dae7',
+        artikel:'http://w3id.org/openeduhub/vocabs/new_lrt_aggregated/c77df53a-2611-4029-9712-f9c0eeb032a3'
+      };
+      var PT={
+        frontal:[[LRT.video,LRT.praes],[LRT.arbeitsblatt,LRT.artikel],[LRT.uebung],[LRT.arbeitsblatt,LRT.uebung],[LRT.quiz]],
+        problem:[[LRT.video,LRT.bild],[LRT.interaktiv],[LRT.webseite,LRT.artikel],[LRT.arbeitsblatt],[LRT.praes]],
+        station:[[LRT.praes],[LRT.arbeitsblatt],[LRT.interaktiv],[LRT.video],[LRT.quiz]],
+        flip:[[LRT.video],[LRT.quiz],[LRT.uebung,LRT.arbeitsblatt],[LRT.interaktiv]],
+        koop:[[LRT.arbeitsblatt],[LRT.arbeitsblatt],[LRT.praes]],
+        direkt:[[LRT.praes],[LRT.video],[LRT.uebung],[LRT.arbeitsblatt],[LRT.quiz]],
+        forsch:[[LRT.video,LRT.bild],[LRT.artikel],[LRT.experiment,LRT.interaktiv],[LRT.arbeitsblatt],[LRT.artikel]],
+        projekt:[[LRT.praes],[LRT.arbeitsblatt],[LRT.webseite,LRT.interaktiv],[LRT.praes],[LRT.quiz]],
+        wplan:[[LRT.praes],[LRT.arbeitsblatt],[LRT.interaktiv,LRT.spiel],[LRT.video],[LRT.quiz]],
+        werkst:[[LRT.praes],[LRT.experiment],[LRT.artikel],[LRT.interaktiv],[LRT.quiz]]
+      };
+      var css=document.createElement('style');
+      css.id='wk-css';
+      css.textContent='#wk-sidebar{position:fixed;top:0;right:0;width:360px;height:100vh;background:#fff;border-left:1px solid #e2e8f0;box-shadow:-4px 0 15px rgba(0,0,0,.1);z-index:2147483647;font-family:system-ui,sans-serif;font-size:14px;display:flex;flex-direction:column}#wk-sidebar.hide{transform:translateX(320px)}#wk-sidebar *{box-sizing:border-box}.wkt{position:absolute;left:-40px;top:50%;transform:translateY(-50%);width:40px;height:80px;background:#2563eb;border:0;border-radius:8px 0 0 8px;color:#fff;cursor:pointer;font-size:20px}.wkh{padding:14px 16px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}.wkh h1{margin:0;font-size:16px}.wkh p{margin:4px 0 0;font-size:11px;opacity:.9}.wks{display:flex;gap:8px;padding:10px 14px;background:#f8fafc;border-bottom:1px solid #e2e8f0}.wks input{flex:1;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px}.wks button{padding:8px 14px;background:#2563eb;color:#fff;border:0;border-radius:6px;cursor:pointer}.wkp{padding:10px 14px;border-bottom:1px solid #e2e8f0}.wkp label{display:block;font-size:10px;color:#64748b;margin-bottom:4px;text-transform:uppercase}.wkp select{width:100%;padding:8px;border:1px solid #e2e8f0;border-radius:6px}.wkl{flex:1;overflow-y:auto;padding:12px}.wki{background:#f8fafc;border:2px dashed #e2e8f0;border-radius:8px;margin-bottom:10px;transition:all .2s}.wki.drag{border-color:#2563eb;background:#eff6ff}.wki.sel{border-color:#22c55e;border-style:solid;background:#f0fdf4}.wkih{padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer}.wkic{font-size:18px}.wkin{flex:1}.wkin b{font-size:13px;display:block}.wkin small{color:#64748b;font-size:10px}.wkit{font-size:10px;color:#64748b;background:#fff;padding:3px 8px;border-radius:4px}.wkib{display:none;padding:0 12px 12px}.wki.open .wkib{display:block}.wkd{min-height:50px;background:#fff;border:1px dashed #cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;padding:10px;text-align:center}.wkd.has{flex-direction:column;align-items:stretch;gap:6px}.wkdi{display:flex;align-items:center;gap:8px;padding:8px;background:#f1f5f9;border-radius:6px;font-size:12px}.wkdi span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wkdi button{background:0;border:0;color:#ef4444;cursor:pointer}.wkf{padding:10px 14px;border-top:1px solid #e2e8f0;display:flex;gap:8px}.wkf button{flex:1;padding:10px;border:0;border-radius:6px;font-size:13px;cursor:pointer}.wkf .pr{background:#2563eb;color:#fff}.wkf .se{background:#f1f5f9;color:#475569}.wk-overlay{position:absolute!important;top:8px!important;right:8px!important;width:36px!important;height:36px!important;background:#22c55e!important;color:#fff!important;border:none!important;border-radius:50%!important;cursor:pointer!important;font-size:18px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-shadow:0 2px 8px rgba(0,0,0,.2)!important;z-index:999999!important;opacity:0;transition:opacity .2s,transform .2s!important}.wk-overlay:hover{transform:scale(1.1)!important;background:#16a34a!important}.wk-card-wrap{position:relative}.wk-card-wrap:hover .wk-overlay{opacity:1}';
+      document.head.appendChild(css);
+      var sb=document.createElement('div');
+      sb.id='wk-sidebar';
+      function rp(){
+        var ph=P[cur].p;
+        return ph.map(function(x,i){
+          var it=items[cur+i]||[];
+          var ih=it.length?it.map(function(o,j){
+            var linkHtml=o.link?'<a href="'+o.link+'" target="_blank" style="color:#2563eb;flex-shrink:0;margin:0 4px" title="'+o.link+'">🔗</a>':'';
+            return '<div class="wkdi" title="'+(o.desc||'')+'"><span>'+o.title+'</span>'+linkHtml+'<button data-p="'+i+'" data-j="'+j+'">×</button></div>'
+          }).join(''):'📦 Klicke 🛒 auf WLO-Karten';
+          var selClass=i===selPhase?' sel':'';
+          return '<div class="wki open'+selClass+'" data-i="'+i+'"><div class="wkih"><span class="wkic">'+x.i+'</span><div class="wkin"><b>'+x.n+'</b><small>'+x.d+'</small></div><span class="wkit">'+x.t+'</span></div><div class="wkib"><div class="wkd'+(it.length?' has':'')+'" data-i="'+i+'">'+ih+'</div></div></div>'
+        }).join('')
+      }
+      function rd(){
+        var op=Object.keys(P).map(function(k){return '<option value="'+k+'"'+(k===cur?' selected':'')+'>'+P[k].n+'</option>'}).join('');
+        sb.innerHTML='<button class="wkt">🛒</button><div class="wkh"><h1>🛒 Pädagogischer Warenkorb</h1><p>Klicke Phase, dann Karte oder ✋-Modus</p></div><div class="wks"><input id="wkq" placeholder="Thema/Suchbegriff..." value="'+topic+'"><button id="wkg">🔍</button><button id="wka" title="Auto-Füllen mit WLO" style="background:#22c55e">🪄</button></div><div class="wkp"><label>Ablaufmuster</label><select id="wksel">'+op+'</select></div><div class="wkl" id="wkl">'+rp()+'</div><div class="wkf"><button class="se" id="wkcm" title="Klick-Modus">✋</button><button class="se" id="wkc">🗑️</button><button class="pr" id="wkpr" title="PDF exportieren">🖨️</button></div>';bindEv()
+      }
+      function bindEv(){
+        sb.querySelector('.wkt').onclick=function(){sb.classList.toggle('hide')};
+        sb.querySelector('#wkg').onclick=function(){var q=sb.querySelector('#wkq').value;topic=q;window.open('https://suche.wirlernenonline.de/search/de/search?q='+encodeURIComponent(q),'_blank')};
+        sb.querySelector('#wkq').onchange=function(){topic=this.value};
+        sb.querySelector('#wksel').onchange=function(e){cur=e.target.value;selPhase=0;sb.querySelector('#wkl').innerHTML=rp();bindPh()};
+        sb.querySelector('#wkc').onclick=function(){if(confirm('Alles löschen?')){items={};sb.querySelector('#wkl').innerHTML=rp();bindPh()}};
+        sb.querySelector('#wka').onclick=async function(){
+          var q=sb.querySelector('#wkq').value;
+          if(!q){showMsg('Bitte Suchbegriff eingeben!');return}
+          if(loading){return}
+          topic=q;loading=true;
+          this.textContent='⏳';
+          showMsg('🪄 Suche WLO-Inhalte für "'+q+'"...');
+          var phases=P[cur].p;
+          var types=PT[cur]||[];
+          for(var i=0;i<phases.length;i++){
+            var lrts=types[i]||[LRT.arbeitsblatt];
+            try{
+              var results=await searchWLO(q,lrts,2);
+              for(var r of results){
+                addIt(i,r);
+              }
+            }catch(e){console.log('WLO-Fehler Phase '+i,e)}
+          }
+          loading=false;
+          this.textContent='🪄';
+          sb.querySelector('#wkl').innerHTML=rp();bindPh();
+          showMsg('✅ Auto-Füllung abgeschlossen!')
+        };
+        sb.querySelector('#wkcm').onclick=function(){
+          clickMode=!clickMode;
+          this.style.background=clickMode?'#22c55e':'#f1f5f9';
+          this.style.color=clickMode?'#fff':'#475569';
+          document.body.style.cursor=clickMode?'crosshair':'';
+          showMsg(clickMode?'✋ Klick-Modus AN: Klicke auf Inhalte':'✋ Klick-Modus AUS');
+        };
+        document.addEventListener('click',function(e){
+          if(!clickMode)return;
+          if(e.target.closest('#wk-sidebar'))return;
+          e.preventDefault();
+          e.stopPropagation();
+          var el=e.target;
+          var card=el.closest('div,article,section,li')||el;
+          var title=(el.innerText||el.textContent||el.alt||el.title||'').trim().split('\\n')[0].substring(0,60);
+          var link=card.querySelector('a')?.href||el.closest('a')?.href||'';
+          var desc='';
+          if(title)addIt(selPhase,{title:title,link:link,desc:desc});
+        },true);
+        sb.querySelector('#wkpr').onclick=function(){
+          var thema=topic||'Unterrichtseinheit';
+          var h='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+thema+' - Unterrichtsentwurf</title><style>@media print{a{color:#1d4ed8!important}}</style></head><body style="font-family:sans-serif;max-width:800px;margin:40px auto;padding:20px"><h1 style="color:#1d4ed8">📋 '+thema+'</h1><p style="background:#f1f5f9;padding:12px;border-radius:8px"><b>Ablaufmuster:</b> '+P[cur].n+'</p><h2>Unterrichtsverlauf</h2>';
+          P[cur].p.forEach(function(x,i){
+            var it=items[cur+i]||[];
+            var listHtml=it.length?'<ul style="margin:0;padding-left:20px">'+it.map(function(o){
+              var linkHtml=o.link?' <a href="'+o.link+'" style="color:#2563eb">[Link]</a>':'';
+              var descHtml=o.desc?'<br><small style="color:#64748b">'+o.desc+'</small>':'';
+              return '<li><b>'+o.title+'</b>'+linkHtml+descHtml+'</li>'
+            }).join('')+'</ul>':'<em style="color:#94a3b8">Keine Materialien</em>';
+            h+='<div style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:12px;page-break-inside:avoid"><div style="background:#f1f5f9;padding:10px 14px;display:flex;align-items:center;gap:10px"><span style="font-size:18px">'+x.i+'</span><b>'+x.n+'</b><span style="margin-left:auto;color:#64748b">'+x.t+'</span></div><div style="padding:14px">'+listHtml+'</div></div>'
+          });
+          h+='<p style="text-align:center;color:#94a3b8;margin-top:30px;font-size:11px">Erstellt mit dem Pädagogischen Warenkorb • Materialien von WirLernenOnline</p></body></html>';
+          var w=window.open('','_blank');w.document.write(h);w.document.close();setTimeout(function(){w.print()},300)
+        };
+        bindPh()
+      }
+      function bindPh(){
+        sb.querySelectorAll('.wkih').forEach(function(el){
+          el.onclick=function(){
+            var idx=parseInt(el.parentElement.dataset.i);
+            selPhase=idx;
+            sb.querySelectorAll('.wki').forEach(function(p,j){p.classList.toggle('sel',j===idx)});
+          }
         });
+        sb.querySelectorAll('.wkd').forEach(function(d){
+          d.ondragover=function(e){e.preventDefault();d.parentElement.parentElement.classList.add('drag')};
+          d.ondragleave=function(){d.parentElement.parentElement.classList.remove('drag')};
+          d.ondrop=function(e){e.preventDefault();d.parentElement.parentElement.classList.remove('drag');var t=e.dataTransfer.getData('text/plain');if(t)addIt(d.dataset.i,t.substring(0,80))};
+          d.ondblclick=function(){var t=prompt('Inhalt hinzufügen:');if(t)addIt(d.dataset.i,t)}
+        });
+        sb.querySelectorAll('.wkdi button').forEach(function(b){
+          b.onclick=function(e){e.stopPropagation();var k=cur+b.dataset.p;items[k].splice(parseInt(b.dataset.j),1);sb.querySelector('#wkl').innerHTML=rp();bindPh()}
+        })
+      }
+      function addIt(i,obj){var k=cur+i;if(!items[k])items[k]=[];if(typeof obj==='string')obj={title:obj,link:'',desc:''};items[k].push(obj);sb.querySelector('#wkl').innerHTML=rp();bindPh();showMsg('Hinzugefügt: '+obj.title.substring(0,30))}
+      function showMsg(m){var d=document.createElement('div');d.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-family:system-ui;font-size:14px;z-index:2147483647;box-shadow:0 4px 12px rgba(0,0,0,.2)';d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove()},2500)}
+      async function searchWLO(q,lrts,max){
+        var url='https://paedagogischerwarenkorb.vercel.app/api/edu-sharing/rest/search/v1/queries/-home-/mds_oeh/ngsearch?contentType=FILES&maxItems=30&skipCount=0&propertyFilter=-all-';
+        var criteria=[{property:'ngsearchword',values:[q]}];
+        if(lrts&&lrts.length){criteria.push({property:'ccm:oeh_lrt_aggregated',values:lrts})}
+        try{
+          var resp=await fetch(url,{
+            method:'POST',
+            headers:{'Accept':'application/json','Content-Type':'application/json'},
+            body:JSON.stringify({criteria:criteria})
+          });
+          if(!resp.ok)throw new Error('API '+resp.status);
+          var data=await resp.json();
+          var nodes=data.nodes||[];
+          var qLow=q.toLowerCase();
+          var mapped=nodes.map(function(n){
+            var id=n.ref?.id||n.properties['sys:node-uuid']?.[0];
+            var wwwUrl=n.properties['ccm:wwwurl']?.[0];
+            if(!wwwUrl&&id)wwwUrl='https://redaktion.openeduhub.net/edu-sharing/components/render/'+id;
+            var title=n.properties['cclom:title']?.[0]||'Ohne Titel';
+            var keywords=(n.properties['cclom:general_keyword']||[]).join(' ');
+            var match=(title+' '+keywords).toLowerCase().indexOf(qLow)>=0;
+            if(!wwwUrl)console.warn('⚠️ Kein Link für:',title,'ref:',n.ref,'uuid:',n.properties['sys:node-uuid']);
+            return {
+              title:title.substring(0,60),
+              desc:(n.properties['cclom:general_description']?.[0]||'').substring(0,120),
+              link:wwwUrl||'',
+              type:n.properties['ccm:oeh_lrt_aggregated_DISPLAYNAME']?.[0]||'',
+              match:match
+            }
+          });
+          var withLink=mapped.filter(function(m){return m.link});
+          var matched=withLink.filter(function(m){return m.match});
+          console.log('WLO Debug: '+nodes.length+' Nodes, '+withLink.length+' mit Link, '+matched.length+' mit Match');
+          var result=matched.length>=max?matched.slice(0,max):withLink.slice(0,max||3);
+          return result
+        }catch(e){
+          console.log('WLO API Fehler:',e);
+          return []
+        }
+      }
+      async function enrichMetadata(title,cardDesc){
+        try{
+          var results=await searchWLO(title,null,30);
+          console.log('🔍 Enrich für "'+title+'" ('+results.length+' Ergebnisse)');
+          if(results.length===0)return null;
+          if(cardDesc&&cardDesc.length>10){
+            var cardWords=cardDesc.toLowerCase().split(/\\s+/).slice(0,4).join(' ');
+            console.log('📝 Vergleiche Beschreibung:',cardWords);
+            for(var r of results){
+              if(r.link&&r.desc){
+                var rWords=r.desc.toLowerCase().split(/\\s+/).slice(0,4).join(' ');
+                if(rWords===cardWords||(cardWords.length>15&&rWords.indexOf(cardWords.substring(0,15))>=0)){
+                  console.log('✅ Beschreibungs-Match:',r.title);
+                  return r;
+                }
+              }
+            }
+          }
+          var withLink=results.filter(function(r){return r.link});
+          if(withLink.length>0){
+            console.log('⚠️ Kein Desc-Match, nutze ersten mit Link:',withLink[0].title);
+            return withLink[0];
+          }
+        }catch(e){console.log('Enrich Fehler:',e)}
+        return null
+      }
+      function addOverlays(){
+        var selectors='app-result-card,mat-card,[class*="result-card"],[class*="CardComponent"],[class*="hitCard"],[class*="search-hit"],[class*="searchHit"],.cdk-drag,[data-test*="result"],[data-cy*="result"]';
+        var cards=document.querySelectorAll(selectors);
+        if(cards.length===0){
+          var fallback=document.querySelectorAll('a[href*="/details/"],a[href*="/node/"]');
+          fallback.forEach(function(a){var p=a.closest('div');if(p&&p.querySelector('img'))cards=document.querySelectorAll('div:has(>a[href*="/details/"]):has(img),div:has(>a[href*="/node/"]):has(img)')});
+        }
+        if(cards.length===0){
+          var imgs=document.querySelectorAll('img[src*="thumbnail"],img[src*="preview"]');
+          imgs.forEach(function(img){var p=img.closest('div');if(p){p.classList.add('wk-found');cards=document.querySelectorAll('.wk-found')}});
+        }
+        console.log('🛒 Gefundene Karten:',cards.length);
+        cards.forEach(function(card){
+          if(card.querySelector('.wk-overlay'))return;
+          if(card.closest('#wk-sidebar'))return;
+          if(card.offsetWidth<100||card.offsetHeight<80)return;
+          var pos=window.getComputedStyle(card).position;
+          if(pos==='static')card.style.position='relative';
+          card.classList.add('wk-card-wrap');
+          var btn=document.createElement('button');
+          btn.className='wk-overlay';
+          btn.innerHTML='🛒';
+          btn.title='Zum Warenkorb hinzufügen';
+          btn.onclick=async function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            var title=card.querySelector('h1,h2,h3,h4,h5,.title,[class*="title"],[class*="Title"],[class*="name"],[class*="Name"]')?.textContent?.trim();
+            if(!title)title=card.querySelector('a[href*="details"],a[href*="node"]')?.textContent?.trim();
+            if(!title)title=card.querySelector('a')?.textContent?.trim();
+            if(!title)title=card.innerText?.split('\\n')[0]?.substring(0,60);
+            if(!title)title='Inhalt';
+            var link=card.querySelector('a[href*="details"],a[href*="node"],a[href*="wlo"],a[href*="oer"]')?.href||card.querySelector('a')?.href||'';
+            var descEl=card.querySelector('[class*="desc"],[class*="Desc"],[class*="snippet"],[class*="text"],p,small');
+            var desc=descEl?.textContent?.trim()?.substring(0,120)||'';
+            if(desc===title)desc='';
+            btn.textContent='⏳';
+            var enriched=await enrichMetadata(title,desc);
+            btn.textContent='🛒';
+            if(enriched){
+              addIt(selPhase,enriched);
+            }else{
+              addIt(selPhase,{title:title.substring(0,60),link:link,desc:desc});
+            }
+          };
+          card.appendChild(btn);
+        });
+        if(cards.length===0){
+          console.log('🛒 Keine Karten gefunden. Nutze Doppelklick auf Phasen zum manuellen Hinzufügen.');
+        }
+      }
+      rd();
+      document.body.appendChild(sb);
+      addOverlays();
+      var obs=new MutationObserver(function(){addOverlays()});
+      obs.observe(document.body,{childList:true,subtree:true});
+      console.log('🛒 Warenkorb geladen! Klicke auf eine Phase, dann auf 🛒 bei den Karten.')
+    })();`;
+
+    // Minifizieren (einfach Whitespace entfernen)
+    var minified = bookmarkletSource
+      .replace(/\s+/g, ' ')
+      .replace(/\s*([{}();,:])\s*/g, '$1')
+      .replace(/;\s*}/g, '}')
+      .trim();
+
+    var bookmarkletCode = 'javascript:' + encodeURIComponent(minified);
+
+    // Code anzeigen
+    document.getElementById('bookmarklet-code').textContent = bookmarkletCode;
+
+    function copyCode() {
+      navigator.clipboard.writeText(bookmarkletCode).then(function() {
+        document.getElementById('copy-success').style.display = 'inline';
+        setTimeout(function() {
+          document.getElementById('copy-success').style.display = 'none';
+        }, 2000);
       });
-    });
+    }
+
+    function runBookmarklet() {
+      eval(minified);
+    }
+
+    // Global machen
+    window.copyCode = copyCode;
+    window.runBookmarklet = runBookmarklet;
   </script>
 </body>
 </html>
