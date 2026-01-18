@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx serve . -p 3000",
     "dev": "npx serve . -p 3000 --cors",
-    "build": "echo 'Bundle erstellen - TODO: Rollup/Webpack konfigurieren'"
+    "build": "echo 'Static site - no build needed'"
   },
   "keywords": [
     "education",
