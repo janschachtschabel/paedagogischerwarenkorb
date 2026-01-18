@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pädagogischer Warenkorb - Demo</title>
+  <link rel="stylesheet" href="sidebar.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f1f5f9;
+      min-height: 100vh;
+    }
+
+    .demo-header {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .demo-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .demo-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .demo-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      padding-right: 420px;
+    }
+
+    .demo-section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .demo-section h2 {
+      font-size: 1.3rem;
+      color: #1e293b;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .demo-section p {
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .demo-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .demo-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      cursor: grab;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .demo-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+
+    .demo-card:active {
+      cursor: grabbing;
+    }
+
+    .demo-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      background: #e2e8f0;
+    }
+
+    .demo-card h3 {
+      font-size: 1rem;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .demo-card p {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .demo-card .type-badge {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    .instructions {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .instructions h3 {
+      color: #92400e;
+      margin-bottom: 10px;
+    }
+
+    .instructions ol {
+      color: #78350f;
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .bookmarklet-section {
+      text-align: center;
+      padding: 30px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 2px dashed #22c55e;
+    }
+
+    .bookmarklet-link {
+      display: inline-block;
+      background: #22c55e;
+      color: white;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: grab;
+      transition: all 0.2s;
+    }
+
+    .bookmarklet-link:hover {
+      background: #16a34a;
+      transform: scale(1.05);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+    }
+
+    .feature-text h4 {
+      font-size: 0.95rem;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .demo-content {
+        padding-right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>🛒 Pädagogischer Warenkorb</h1>
+    <p>Plane deinen Unterricht strukturiert mit Inhalten von WirLernenOnline</p>
+  </div>
+
+  <div class="demo-content">
+    <div class="instructions">
+      <h3>📋 So funktioniert's</h3>
+      <ol>
+        <li><strong>Ablaufmuster wählen</strong> - Wähle rechts ein passendes Unterrichtsmuster</li>
+        <li><strong>Inhalte suchen</strong> - Nutze die Suche, um WLO zu durchsuchen</li>
+        <li><strong>Zuordnen</strong> - Ziehe Inhalte per Drag & Drop in die Phasen</li>
+        <li><strong>Differenzieren</strong> - Wähle Optionen für Binnendifferenzierung</li>
+        <li><strong>Exportieren</strong> - Erstelle einen druckbaren Unterrichtsentwurf</li>
+      </ol>
+    </div>
+
+    <div class="demo-section bookmarklet-section">
+      <h2>🔖 Bookmarklet installieren</h2>
+      <p style="margin-bottom: 20px;">Öffne die Installationsseite für das Bookmarklet:</p>
+      <a class="bookmarklet-link" href="bookmarklet-inline.html" style="text-decoration: none;">
+        📥 Bookmarklet-Installation öffnen
+      </a>
+      <p style="margin-top: 16px; font-size: 0.9rem; color: #64748b;">
+        Dort kannst du das Bookmarklet in deine Lesezeichen ziehen
+      </p>
+    </div>
+
+    <div class="demo-section">
+      <h2>✨ Features</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <span class="feature-icon">📐</span>
+          <div class="feature-text">
+            <h4>Ablaufmuster</h4>
+            <p>7+ didaktische Muster zur Auswahl</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🔍</span>
+          <div class="feature-text">
+            <h4>WLO-Integration</h4>
+            <p>Direkte Suche in WirLernenOnline</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🎯</span>
+          <div class="feature-text">
+            <h4>Drag & Drop</h4>
+            <p>Inhalte einfach zuordnen</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🎨</span>
+          <div class="feature-text">
+            <h4>Differenzierung</h4>
+            <p>Anpassung für alle Lernenden</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📄</span>
+          <div class="feature-text">
+            <h4>PDF-Export</h4>
+            <p>Druckbarer Unterrichtsentwurf</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🤖</span>
+          <div class="feature-text">
+            <h4>Auto-Suche</h4>
+            <p>Automatische Inhaltsvorschläge</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>📦 Demo-Inhalte</h2>
+      <p>Ziehe diese Karten in die Phasen rechts, um die Drag & Drop Funktion zu testen:</p>
+      
+      <div class="demo-cards">
+        <div class="demo-card" draggable="true" data-title="Einführungsvideo: Photosynthese" data-type="🎬 Video" data-url="https://example.com/video1">
+          <img src="https://via.placeholder.com/300x150/3b82f6/ffffff?text=Video" alt="">
+          <span class="type-badge">🎬 Video</span>
+          <h3>Einführungsvideo: Photosynthese</h3>
+          <p>5:30 Min • CC BY-SA 4.0</p>
+        </div>
+
+        <div class="demo-card" draggable="true" data-title="Arbeitsblatt: Blattaufbau" data-type="📝 Arbeitsblatt" data-url="https://example.com/ab1">
+          <img src="https://via.placeholder.com/300x150/22c55e/ffffff?text=AB" alt="">
+          <span class="type-badge">📝 AB</span>
+          <h3>Arbeitsblatt: Blattaufbau</h3>
+          <p>2 Seiten • CC BY 4.0</p>
+        </div>
+
+        <div class="demo-card" draggable="true" data-title="Interaktive Übung: Quiz" data-type="💻 H5P" data-url="https://example.com/h5p1">
+          <img src="https://via.placeholder.com/300x150/f59e0b/ffffff?text=H5P" alt="">
+          <span class="type-badge">💻 H5P</span>
+          <h3>Interaktive Übung: Quiz</h3>
+          <p>10 Fragen • CC0</p>
+        </div>
+
+        <div class="demo-card" draggable="true" data-title="Simulation: Pflanzenzelle" data-type="🔬 Simulation" data-url="https://example.com/sim1">
+          <img src="https://via.placeholder.com/300x150/8b5cf6/ffffff?text=SIM" alt="">
+          <span class="type-badge">🔬 Sim</span>
+          <h3>Simulation: Pflanzenzelle</h3>
+          <p>Interaktiv • CC BY-NC</p>
+        </div>
+
+        <div class="demo-card" draggable="true" data-title="Erklärvideo: Chloroplasten" data-type="🎬 Video" data-url="https://example.com/video2">
+          <img src="https://via.placeholder.com/300x150/ec4899/ffffff?text=Erkl%C3%A4r" alt="">
+          <span class="type-badge">🎬 Video</span>
+          <h3>Erklärvideo: Chloroplasten</h3>
+          <p>8:15 Min • CC BY 4.0</p>
+        </div>
+
+        <div class="demo-card" draggable="true" data-title="Lernspiel: Stoffkreislauf" data-type="🎮 Spiel" data-url="https://example.com/game1">
+          <img src="https://via.placeholder.com/300x150/06b6d4/ffffff?text=Game" alt="">
+          <span class="type-badge">🎮 Spiel</span>
+          <h3>Lernspiel: Stoffkreislauf</h3>
+          <p>Level 1-3 • CC BY-SA</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <h2>🚀 Weiterentwicklungsideen</h2>
+      <ul style="color: #64748b; padding-left: 20px; line-height: 2;">
+        <li><strong>KI-Unterstützung:</strong> Automatische Phasen-Zuordnung basierend auf Lernzielen</li>
+        <li><strong>Kollaboration:</strong> Gemeinsames Planen im Team in Echtzeit</li>
+        <li><strong>Vorlagen-Bibliothek:</strong> Fertige Unterrichtsentwürfe teilen und remixen</li>
+        <li><strong>Kompetenz-Mapping:</strong> Automatische Zuordnung zu Bildungsstandards</li>
+        <li><strong>Lernpfad-Export:</strong> Integration mit LMS (Moodle, ILIAS)</li>
+        <li><strong>Zeitplanung:</strong> Automatische Anpassung der Phasendauer</li>
+        <li><strong>Feedback-Loop:</strong> Bewertung von Materialien durch Lehrkräfte</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="patterns.js"></script>
+  <script src="wlo-api.js"></script>
+  <script src="pdf-export.js"></script>
+  <script src="sidebar.js"></script>
+  <script>
+    // Sidebar initialisieren
+    document.addEventListener('DOMContentLoaded', () => {
+      initWarenkorb();
+
+      // Demo-Karten draggable machen
+      document.querySelectorAll('.demo-card').forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+          const data = {
+            id: 'demo-' + Date.now(),
+            title: card.dataset.title,
+            type: card.dataset.type,
+            url: card.dataset.url,
+            thumbnail: card.querySelector('img')?.src || ''
+          };
+          e.dataTransfer.setData('application/json', JSON.stringify(data));
+          e.dataTransfer.setData('text/plain', data.title);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

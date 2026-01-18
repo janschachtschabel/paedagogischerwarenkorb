@@ -1,0 +1,25 @@
+{
+  "name": "paedagogischer-warenkorb",
+  "version": "1.0.0",
+  "description": "Browser-Sidebar für strukturierte Unterrichtsplanung mit WLO-Inhalten",
+  "main": "sidebar.js",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "dev": "npx serve . -p 3000 --cors",
+    "build": "echo 'Bundle erstellen - TODO: Rollup/Webpack konfigurieren'"
+  },
+  "keywords": [
+    "education",
+    "oer",
+    "wlo",
+    "wirlernenonline",
+    "lesson-planning",
+    "bookmarklet"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
