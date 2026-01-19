@@ -393,37 +393,47 @@
           console.log('🔍 Enrich für "'+title+'" ('+results.length+' Ergebnisse)');
           if(results.length===0)return null;
           var origTitle=title.toLowerCase().trim();
+          var origWords=origTitle.split(/\\s+/).slice(0,3).join(' ');
           var cardWords=cardDesc?cardDesc.toLowerCase().split(/\\s+/).slice(0,3).join(' '):'';
-          console.log('📝 Vergleiche Titel:"'+origTitle+'" Desc:"'+cardWords+'"');
+          var hasDesc=cardWords.length>5;
+          console.log('📝 Vergleiche TitelWords:"'+origWords+'" DescWords:"'+cardWords+'" (hasDesc:'+hasDesc+')');
           for(var r of results){
             if(!r.link)continue;
             var rTitle=r.title.toLowerCase().trim();
-            var titleMatch=rTitle===origTitle||rTitle.indexOf(origTitle)===0||origTitle.indexOf(rTitle)===0;
-            if(!titleMatch&&origTitle.length>15){
-              titleMatch=rTitle.indexOf(origTitle.substring(0,20))===0;
+            var rTitleWords=rTitle.split(/\\s+/).slice(0,3).join(' ');
+            var titleMatch=rTitleWords===origWords||rTitle===origTitle;
+            if(!titleMatch&&origWords.split(/\\s+/).length>=2){
+              var first2=origTitle.split(/\\s+/).slice(0,2).join(' ');
+              var rFirst2=rTitle.split(/\\s+/).slice(0,2).join(' ');
+              titleMatch=rFirst2===first2;
             }
             if(titleMatch){
-              if(cardWords.length>5&&r.desc){
-                var rWords=r.desc.toLowerCase().split(/\\s+/).slice(0,3).join(' ');
-                if(rWords===cardWords||rWords.indexOf(cardWords.substring(0,15))>=0||cardWords.indexOf(rWords.substring(0,15))>=0){
-                  console.log('✅ Titel+Desc Match:',r.title);
-                  return r;
+              if(hasDesc){
+                if(r.desc){
+                  var rWords=r.desc.toLowerCase().split(/\\s+/).slice(0,3).join(' ');
+                  if(rWords===cardWords||rWords.indexOf(cardWords.substring(0,12))>=0||cardWords.indexOf(rWords.substring(0,12))>=0){
+                    console.log('✅ Titel+Desc Match:',r.title);
+                    return r;
+                  }
                 }
               }else{
-                console.log('✅ Titel Match:',r.title);
+                console.log('✅ Titel Match (keine Desc):',r.title);
                 return r;
               }
             }
           }
-          for(var r of results){
-            if(!r.link)continue;
-            var rTitle=r.title.toLowerCase().trim();
-            if(rTitle===origTitle||rTitle.indexOf(origTitle)===0||origTitle.indexOf(rTitle)===0){
-              console.log('⚠️ Nur Titel-Match (ohne Desc):',r.title);
-              return r;
+          if(!hasDesc){
+            for(var r of results){
+              if(!r.link)continue;
+              var rTitle=r.title.toLowerCase().trim();
+              var rTitleWords=rTitle.split(/\\s+/).slice(0,3).join(' ');
+              if(rTitleWords===origWords||rTitle===origTitle){
+                console.log('⚠️ Fallback Titel-Match:',r.title);
+                return r;
+              }
             }
           }
-          console.log('❌ Kein passender Titel gefunden für:',title);
+          console.log('❌ Kein passender Inhalt für:',title,'(Desc erforderlich:',hasDesc+')');
         }catch(e){console.log('Enrich Fehler:',e)}
         return null
       }
