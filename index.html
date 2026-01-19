@@ -398,9 +398,9 @@
           for(var r of results){
             if(!r.link)continue;
             var rTitle=r.title.toLowerCase().trim();
-            var titleMatch=rTitle===origTitle||rTitle.indexOf(origTitle)>=0||origTitle.indexOf(rTitle)>=0;
-            if(!titleMatch&&origTitle.length>10){
-              titleMatch=rTitle.indexOf(origTitle.substring(0,Math.min(30,origTitle.length)))>=0;
+            var titleMatch=rTitle===origTitle||rTitle.indexOf(origTitle)===0||origTitle.indexOf(rTitle)===0;
+            if(!titleMatch&&origTitle.length>15){
+              titleMatch=rTitle.indexOf(origTitle.substring(0,20))===0;
             }
             if(titleMatch){
               if(cardWords.length>5&&r.desc){
@@ -418,7 +418,7 @@
           for(var r of results){
             if(!r.link)continue;
             var rTitle=r.title.toLowerCase().trim();
-            if(rTitle===origTitle||rTitle.indexOf(origTitle)>=0||origTitle.indexOf(rTitle)>=0){
+            if(rTitle===origTitle||rTitle.indexOf(origTitle)===0||origTitle.indexOf(rTitle)===0){
               console.log('⚠️ Nur Titel-Match (ohne Desc):',r.title);
               return r;
             }
